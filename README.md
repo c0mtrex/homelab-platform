@@ -1,7 +1,7 @@
 # Homelab Platform
 
 Enterprise DevOps & SRE homelab built to demonstrate modern infrastructure engineering practices.
-
+This repo documents the development of the homelab. 
 ## Objectives
 
 - Learn Git and GitHub workflows
