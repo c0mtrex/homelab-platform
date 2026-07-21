@@ -1,23 +1,170 @@
-# Homelab Platform
+# 🏠 Homelab Platform
 
-Enterprise DevOps & SRE homelab built to demonstrate modern infrastructure engineering practices.
-This repo documents the development of the homelab. 
-## Objectives
+> Enterprise DevOps & Site Reliability Engineering (SRE) homelab built from the ground up to develop production-level infrastructure, automation, observability, and cloud engineering skills.
 
-- Learn Git and GitHub workflows
-- Build Infrastructure as Code
-- Deploy containerized services with Docker
-- Implement monitoring and observability
-- Automate infrastructure with Ansible
-- Provision cloud resources with Terraform
-- Learn Kubernetes
-- Document every phase of the project
+---
 
-## Current Status
+# Project Goal
 
-- [x] Phase 1 - Proxmox Infrastructure
-- [x] Phase 2 - Docker Monitoring Stack
-- [ ] Phase 3 - Git & GitHub
-- [ ] Phase 4 - CI/CD
-- [ ] Phase 5 - Ansible
-- [ ] Phase 6 - Kubernetes
+This repository documents the complete design, implementation, and evolution of my DevOps/SRE homelab.
+
+The objective is not only to learn new technologies, but to understand how modern engineering teams build, automate, monitor, and maintain production infrastructure.
+
+Everything in this repository is version controlled and documented as if it were supporting a real production environment.
+
+---
+
+# Current Infrastructure
+
+## Hypervisor
+
+- Proxmox VE
+- HP Z840 Workstation
+- Ubuntu Server virtual machines
+- QNAP NAS for storage and backups
+
+## Container Platform
+
+- Docker
+- Docker Compose
+- Portainer
+
+## Monitoring Stack
+
+- Prometheus
+- Grafana
+- Node Exporter
+- cAdvisor
+
+---
+
+# Learning Roadmap
+
+## ✅ Phase 1 — Infrastructure
+
+- [x] Install Proxmox
+- [x] Configure networking
+- [x] Configure shared storage
+- [x] Create Ubuntu template
+- [x] Deploy Docker VM
+
+---
+
+## ✅ Phase 2 — Monitoring
+
+- [x] Docker installation
+- [x] Portainer deployment
+- [x] Prometheus deployment
+- [x] Grafana deployment
+- [x] Node Exporter deployment
+- [x] cAdvisor deployment
+
+---
+
+## 🚧 Phase 3 — Version Control & Engineering Workflow
+
+- [x] Git installation
+- [x] GitHub repository
+- [x] VS Code integration
+- [x] First commit
+- [x] First push
+- [ ] Repository organization
+- [ ] GitHub Projects
+- [ ] GitHub Issues
+- [ ] Branching strategy
+
+---
+
+## Planned Phases
+
+- [ ] CI/CD with GitHub Actions
+- [ ] Infrastructure as Code (Ansible)
+- [ ] Terraform
+- [ ] Kubernetes
+- [ ] Helm
+- [ ] Logging (Loki)
+- [ ] Alertmanager
+- [ ] OpenTelemetry
+- [ ] Cloud Infrastructure (AWS)
+
+---
+
+# Repository Structure
+
+```text
+homelab-platform/
+│
+├── docker/
+│   └── monitoring/
+│
+├── docs/
+│   ├── architecture/
+│   ├── decisions/
+│   ├── phases/
+│   └── runbooks/
+│
+├── infrastructure/
+│   ├── docker01/
+│   ├── network/
+│   ├── proxmox/
+│   └── storage/
+│
+├── scripts/
+│   ├── backup/
+│   ├── maintenance/
+│   └── monitoring/
+│
+└── diagrams/
+```
+
+---
+
+# Engineering Principles
+
+This project follows several guiding principles:
+
+- Infrastructure as Code
+- Automation over manual configuration
+- Version control for all configuration
+- Documentation for every major implementation
+- Reproducible deployments
+- Monitoring before optimization
+- Security by default
+
+---
+
+# Technologies
+
+| Category | Technologies |
+|----------|--------------|
+| Virtualization | Proxmox VE |
+| Operating System | Ubuntu Server |
+| Containers | Docker, Docker Compose |
+| Monitoring | Prometheus, Grafana, Node Exporter, cAdvisor |
+| Version Control | Git, GitHub |
+| IDE | Visual Studio Code |
+| Automation | Ansible *(planned)* |
+| Infrastructure as Code | Terraform *(planned)* |
+| Container Orchestration | Kubernetes *(planned)* |
+
+---
+
+# Repository Status
+
+**Current Version:** v0.1
+
+Current focus:
+
+- Establishing a professional Git workflow
+- Organizing project documentation
+- Preparing the repository for CI/CD
+
+---
+
+# Author
+
+**Shaun Browne**
+
+Enterprise Infrastructure • DevOps • Site Reliability Engineering
+
+This repository documents my continuous learning journey toward becoming a production-level DevOps / SRE engineer.
