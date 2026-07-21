@@ -1,4 +1,6 @@
-# 🏠 Homelab Platform
+# Homelab Platform
+
+### Enterprise DevOps & Site Reliability Engineering Portfolio
 
 > Enterprise DevOps & Site Reliability Engineering (SRE) homelab built from the ground up to develop production-level infrastructure, automation, observability, and cloud engineering skills.
 
@@ -7,10 +9,6 @@
 # Project Goal
 
 This repository documents the complete design, implementation, and evolution of my DevOps/SRE homelab.
-
-The objective is not only to learn new technologies, but to understand how modern engineering teams build, automate, monitor, and maintain production infrastructure.
-
-Everything in this repository is version controlled and documented as if it were supporting a real production environment.
 
 ---
 
