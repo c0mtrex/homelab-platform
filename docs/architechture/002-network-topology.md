@@ -8,6 +8,31 @@ The initial deployment uses a single management bridge in Proxmox. Future phases
 
 ---
 
+## Virtual Switches
+
+### vmbr0
+
+Primary bridge connected to the physical network.
+
+Responsibilities:
+
+- Proxmox Management
+- Internet Connectivity
+- Existing VMs
+
+---
+
+### vmbr1
+
+Virtual-only bridge.
+
+Purpose:
+
+- Lab Network
+- Future OPNsense LAN
+- Future VLAN Segmentation
+- Isolated Testing Environment
+
 # Current Topology
 
 Internet
