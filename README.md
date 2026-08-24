@@ -93,8 +93,8 @@ Directories are added when their first managed artifact is introduced; Git does 
 - [x] Inventory running virtual machines and Docker workloads
 - [x] Verify inter-network DNS, routing, and service connectivity
 - [ ] Reconcile current architecture documentation
-- [ ] Import sanitized Docker Compose definitions
-- [ ] Add GitHub Actions validation
+- [x] Import sanitized Docker Compose definitions
+- [x] Add GitHub Actions validation
 - [ ] Add operational runbooks
 
 ### Next phase: Kubernetes and GitOps

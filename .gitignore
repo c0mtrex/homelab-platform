@@ -1,0 +1,27 @@
+# Runtime state and local configuration
+.env
+.env.*
+!.env.example
+*.local
+
+# Docker service data
+docker/monitoring/grafana/data/
+docker/monitoring/prometheus/data/
+docker/portainer/data/
+
+# Kubernetes client credentials and generated files
+.kube/
+kubeconfig*
+
+# Terraform generated state
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# Editor and operating-system files
+*.orig
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
