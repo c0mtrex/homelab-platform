@@ -1,168 +1,147 @@
 # Homelab Platform
 
-### Enterprise DevOps & Site Reliability Engineering Portfolio
+## Enterprise DevOps and Site Reliability Engineering Portfolio
 
-> Enterprise DevOps & Site Reliability Engineering (SRE) homelab built from the ground up to develop production-level infrastructure, automation, observability, and cloud engineering skills.
+This repository is the source of truth for a production-inspired homelab used to practice infrastructure engineering, automation, observability, networking, CI/CD, Kubernetes, and GitOps.
 
----
+The platform runs on Proxmox and deliberately separates administration, workloads, observability, routing, and storage so failures and security boundaries can be studied rather than hidden inside one server.
 
-# Project Goal
+## Current Platform
 
-This repository documents the complete design, implementation, and evolution of my DevOps/SRE homelab.
+```text
+                           Proxmox VE
+                               |
+             +-----------------+-----------------+
+             |                 |                 |
+         admin01              k801           docker01
+       Administration     Kubernetes lab     Observability
+        10.10.0.160        10.10.0.130        10.0.0.30
+             \                 |                 /
+              +------------ OPNsense -----------+
+                      DNS, routing, firewall
+                               |
+                         QNAP storage
+                          10.0.0.200
+```
 
----
+### Verified capabilities
 
-# Current Infrastructure
+- Proxmox VE virtualization on an HP Z840 workstation
+- Ubuntu virtual machines with separated operational responsibilities
+- OPNsense routing, DNS, aliases, and source-interface firewall policies
+- Docker and Docker Compose workloads
+- Prometheus, Grafana, Node Exporter, and cAdvisor monitoring
+- Portainer container administration
+- QNAP storage for Git, documentation, and backups
+- Git and GitHub version-control workflow
 
-## Hypervisor
+### Current limitations
 
-- Proxmox VE
-- HP Z840 Workstation
-- Ubuntu Server virtual machines
-- QNAP NAS for storage and backups
+- Kubernetes and Argo CD are not installed yet.
+- The running Docker Compose definitions have not yet been reconciled into this repository.
+- GitHub Actions validation is not yet configured for this repository.
+- Several container images currently use mutable `latest` tags.
+- Most monitoring containers do not yet define health checks.
+- Kubernetes metrics, centralized logging, tracing, and alert routing remain planned work.
 
-## Container Platform
+## Engineering Principles
 
-- Docker
-- Docker Compose
-- Portainer
+- Git is the desired source of truth.
+- Changes are reviewed through feature branches and pull requests.
+- Infrastructure and application configuration should be reproducible.
+- Monitoring and recovery are designed with the workload, not added afterward.
+- Secrets and generated state are excluded from source control.
+- Access is granted for a documented purpose and verified from the intended source.
+- Current state, desired state, and planned state are documented separately.
+- Failures are introduced deliberately in the lab and followed by documented recovery.
 
-## Monitoring Stack
-
-- Prometheus
-- Grafana
-- Node Exporter
-- cAdvisor
-
----
-
-# Learning Roadmap
-
-## ✅ Phase 1 — Infrastructure
-
-- [x] Install Proxmox
-- [x] Configure networking
-- [x] Configure shared storage
-- [x] Create Ubuntu template
-- [x] Deploy Docker VM
-
----
-
-## ✅ Phase 2 — Monitoring
-
-- [x] Docker installation
-- [x] Portainer deployment
-- [x] Prometheus deployment
-- [x] Grafana deployment
-- [x] Node Exporter deployment
-- [x] cAdvisor deployment
-
----
-
-## 🚧 Phase 3 — Version Control & Engineering Workflow
-
-- [x] Git installation
-- [x] GitHub repository
-- [x] VS Code integration
-- [x] First commit
-- [x] First push
-- [ ] Repository organization
-- [ ] GitHub Projects
-- [ ] GitHub Issues
-- [ ] Branching strategy
-
----
-
-## Planned Phases
-
-- [ ] CI/CD with GitHub Actions
-- [ ] Infrastructure as Code (Ansible)
-- [ ] Terraform
-- [ ] Kubernetes
-- [ ] Helm
-- [ ] Logging (Loki)
-- [ ] Alertmanager
-- [ ] OpenTelemetry
-- [ ] Cloud Infrastructure (AWS)
-
----
-
-# Repository Structure
+## Repository Structure
 
 ```text
 homelab-platform/
-│
-├── docker/
-│   └── monitoring/
-│
+├── .github/workflows/       # Automated validation and deployment workflows
+├── argocd/                  # Argo CD application definitions
+├── docker/                  # Docker Compose platform configuration
 ├── docs/
-│   ├── architecture/
-│   ├── decisions/
-│   ├── phases/
-│   └── runbooks/
-│
-├── infrastructure/
-│   ├── docker01/
-│   ├── network/
-│   ├── proxmox/
-│   └── storage/
-│
-├── scripts/
-│   ├── backup/
-│   ├── maintenance/
-│   └── monitoring/
-│
-└── diagrams/
+│   ├── architecture/        # Current architecture and design
+│   ├── decisions/           # Architecture decision records
+│   ├── phases/              # Implementation phases and learning outcomes
+│   └── runbooks/            # Repeatable operational procedures
+├── infrastructure/          # Host, network, and storage automation
+├── kubernetes/              # Kubernetes base and environment configuration
+├── monitoring/              # Metrics, dashboards, alerts, and telemetry
+└── scripts/                 # Auditable operational automation
 ```
 
----
+Directories are added when their first managed artifact is introduced; Git does not track empty directories.
 
-# Engineering Principles
+## Delivery Roadmap
 
-This project follows several guiding principles:
+### Completed foundation
 
-- Infrastructure as Code
-- Automation over manual configuration
-- Version control for all configuration
-- Documentation for every major implementation
-- Reproducible deployments
-- Monitoring before optimization
-- Security by default
+- [x] Proxmox installation and VM deployment
+- [x] QNAP storage integration
+- [x] OPNsense routing, DNS, and firewall policy
+- [x] Docker and Docker Compose
+- [x] Portainer
+- [x] Prometheus, Grafana, Node Exporter, and cAdvisor
+- [x] Git and GitHub repository
+- [x] Feature-branch workflow introduced
 
----
+### Current phase: platform reconciliation
 
-# Technologies
+- [x] Inventory running virtual machines and Docker workloads
+- [x] Verify inter-network DNS, routing, and service connectivity
+- [ ] Reconcile current architecture documentation
+- [ ] Import sanitized Docker Compose definitions
+- [ ] Add GitHub Actions validation
+- [ ] Add operational runbooks
 
-| Category | Technologies |
-|----------|--------------|
-| Virtualization | Proxmox VE |
-| Operating System | Ubuntu Server |
-| Containers | Docker, Docker Compose |
-| Monitoring | Prometheus, Grafana, Node Exporter, cAdvisor |
-| Version Control | Git, GitHub |
-| IDE | Visual Studio Code |
-| Automation | Ansible *(planned)* |
-| Infrastructure as Code | Terraform *(planned)* |
-| Container Orchestration | Kubernetes *(planned)* |
+### Next phase: Kubernetes and GitOps
 
----
+- [ ] Create a recovery snapshot before cluster installation
+- [ ] Install `kubectl` and `kind` on `k801`
+- [ ] Deploy and troubleshoot a containerized application
+- [ ] Add health probes and resource controls
+- [ ] Install Helm and Argo CD
+- [ ] Reconcile Kubernetes desired state from Git
+- [ ] Connect Kubernetes metrics to Prometheus and Grafana on `docker01`
+- [ ] Exercise drift, failed rollout, rollback, and recovery
 
-# Repository Status
+### Future phases
 
-**Current Version:** v0.1
+- [ ] Alertmanager and actionable alert routing
+- [ ] Loki centralized logging
+- [ ] OpenTelemetry and distributed tracing
+- [ ] Ansible host configuration
+- [ ] Terraform infrastructure provisioning
+- [ ] Backup automation and recovery testing
+- [ ] Container-image scanning and policy validation
 
-Current focus:
+## Technology Map
 
-- Establishing a professional Git workflow
-- Organizing project documentation
-- Preparing the repository for CI/CD
+| Area | Current | Planned |
+|---|---|---|
+| Virtualization | Proxmox VE, QEMU/KVM | Automated VM provisioning |
+| Operating systems | Ubuntu Server and Desktop | Standardized host configuration |
+| Networking | OPNsense, DNS, routing, firewall aliases | Tighter service-to-service policy |
+| Containers | Docker, Docker Compose, Portainer | Version-pinned images and health checks |
+| Orchestration | Not installed | Kubernetes with `kind` |
+| GitOps | Git documentation workflow | Argo CD reconciliation |
+| Observability | Prometheus, Grafana, Node Exporter, cAdvisor | Kubernetes metrics, logs, traces, alerts |
+| Storage | QNAP and Proxmox storage | Tested rotation and recovery procedures |
+| CI/CD | Feature branches and pull requests | GitHub Actions validation |
 
----
+## Documentation
 
-# Author
+- [Lab overview](docs/architecture/001-lab-overview.md)
+- [Network topology](docs/architecture/002-network-topology.md)
+- [Storage design](docs/architecture/003-storage-design.md)
+- [Monitoring stack](docs/architecture/004-monitoring-stack.md)
+- [Kubernetes and GitOps phase](docs/phases/005-kubernetes-gitops.md)
+
+## Author
 
 **Shaun Browne**
 
-Enterprise Infrastructure • DevOps • Site Reliability Engineering
-
-This repository documents my continuous learning journey toward becoming a production-level DevOps / SRE engineer.
+Enterprise Infrastructure · Automation · DevOps · Site Reliability Engineering
