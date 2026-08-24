@@ -21,6 +21,7 @@ fi
 printf '%s\n' "Checking Docker Compose models"
 run_docker compose --file docker/monitoring/compose.yaml config --quiet
 run_docker compose --file docker/portainer/compose.yaml config --quiet
+run_docker compose --file docker/service-health-api/compose.yaml config --quiet
 
 printf '%s\n' "Checking Prometheus configuration"
 run_docker run --rm \

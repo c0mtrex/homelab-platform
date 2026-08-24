@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Compose and Prometheus
+    name: Platform configuration and API
     runs-on: ubuntu-latest
 
     steps:
@@ -24,3 +24,6 @@ jobs:
 
       - name: Validate platform configuration
         run: scripts/validate.sh
+
+      - name: Test service-health API
+        run: scripts/test-service-health-api.sh

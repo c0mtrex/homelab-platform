@@ -1,0 +1,33 @@
+services:
+  service-health-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: service-health-api:1.0.0
+    container_name: service-health-api
+    restart: unless-stopped
+    environment:
+      SERVICE_NAME: service-health-api
+      DEPENDENCY_URL: http://10.0.0.30:9090/-/healthy
+      REQUEST_TIMEOUT_SECONDS: "3"
+      ALLOWED_ORIGINS: http://localhost:3000
+    ports:
+      - "8082:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - service-health
+
+networks:
+  service-health:
+    driver: bridge

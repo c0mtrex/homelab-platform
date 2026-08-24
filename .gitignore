@@ -19,6 +19,10 @@ kubeconfig*
 *.tfstate.*
 *.tfplan
 
+# Python bytecode and interpreter caches
+__pycache__/
+*.py[cod]
+
 # Editor and operating-system files
 *.orig
 .DS_Store
