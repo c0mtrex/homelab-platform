@@ -14,10 +14,13 @@
             "kind": "DataQuery",
             "group": "grafana",
             "version": "v0",
+            "spec": {},
+            "labels": {
+              "grafana.app/export-label": "grafana-1"
+            },
             "datasource": {
               "name": "-- Grafana --"
-            },
-            "spec": {}
+            }
           },
           "enable": true,
           "hide": true,
@@ -49,14 +52,18 @@
                       "kind": "DataQuery",
                       "group": "prometheus",
                       "version": "v0",
-                      "datasource": {
-                        "name": "afsekhkpig16oc"
-                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "up{job=\"service-health-api\"}",
                         "legendFormat": "__auto",
                         "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "prometheus"
+                      },
+                      "datasource": {
+                        "name": "afsekhkpig16oc"
                       }
                     },
                     "refId": "A",
@@ -172,14 +179,18 @@
                       "kind": "DataQuery",
                       "group": "prometheus",
                       "version": "v0",
-                      "datasource": {
-                        "name": "afsekhkpig16oc"
-                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sum(\n    rate(\n      service_health_http_requests_total{\n        job=\"service-health-api\"\n      }[5m]\n    )\n  )\n",
                         "legendFormat": "__auto",
                         "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "prometheus"
+                      },
+                      "datasource": {
+                        "name": "afsekhkpig16oc"
                       }
                     },
                     "refId": "A",
@@ -257,14 +268,18 @@
                       "kind": "DataQuery",
                       "group": "prometheus",
                       "version": "v0",
-                      "datasource": {
-                        "name": "afsekhkpig16oc"
-                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "histogram_quantile(\n    0.95,\n    sum by (le) (\n      rate(\n        service_health_http_request_duration_seconds_bucket{\n          job=\"service-health-api\"\n        }[5m]\n      )\n    )\n  )\n",
                         "legendFormat": "__auto",
                         "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "prometheus"
+                      },
+                      "datasource": {
+                        "name": "afsekhkpig16oc"
                       }
                     },
                     "refId": "A",
@@ -377,14 +392,18 @@
                       "kind": "DataQuery",
                       "group": "prometheus",
                       "version": "v0",
-                      "datasource": {
-                        "name": "afsekhkpig16oc"
-                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sum by (result) (\n    increase(\n      service_health_dependency_checks_total{\n        job=\"service-health-api\"\n      }[15m]\n    )\n  )\n",
                         "legendFormat": "__auto",
                         "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "prometheus"
+                      },
+                      "datasource": {
+                        "name": "afsekhkpig16oc"
                       }
                     },
                     "refId": "A",
@@ -478,6 +497,131 @@
             }
           }
         }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "HTTP Requests by Status Code",
+          "description": "Number of API responses grouped by HTTP status code during the last 15 minutes",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "sum by (status_code) (\n    increase(\n      service_health_http_requests_total{\n        job=\"service-health-api\"\n      }[15m]\n    )\n  )\n",
+                        "legendFormat": "__auto",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "prometheus"
+                      },
+                      "datasource": {
+                        "name": "afsekhkpig16oc"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "enableFacetedFilter": true,
+                  "overflow": "ellipsis",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          },
+          "transparent": true
+        }
       }
     },
     "layout": {
@@ -520,6 +664,15 @@
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-4"
+              }
+            }
+          },
+          {
+            "kind": "AutoGridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-5"
               }
             }
           }
