@@ -31,6 +31,12 @@ scripts/validate.sh
 
 Validation renders both Compose models and checks the Prometheus configuration without starting the platform services.
 
+## Grafana dashboards
+
+Grafana dashboards under `monitoring/grafana/dashboards` are loaded through the file provider in
+`monitoring/grafana/provisioning/dashboards`. Provisioned dashboards are reviewed in Git and are
+read-only in the Grafana UI; update the source file and redeploy it instead of editing it in place.
+
 ## Deployment boundary
 
 These files are not automatically deployed yet. Updating Git does not change Docker01 until an approved deployment or GitOps mechanism is introduced.
