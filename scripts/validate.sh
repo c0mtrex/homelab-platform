@@ -23,6 +23,34 @@ run_docker compose --file docker/monitoring/compose.yaml config --quiet
 run_docker compose --file docker/portainer/compose.yaml config --quiet
 run_docker compose --file docker/service-health-api/compose.yaml config --quiet
 
+printf '%s\n' "Checking Grafana dashboard definitions"
+  for dashboard_file in docker/monitoring/grafana/dashboards/*.json; do
+      [ -f "$dashboard_file" ] || continue
+
+      jq -e '
+          .apiVersion == "dashboard.grafana.app/v2" and
+          .kind == "Dashboard" and
+          (.metadata.name | type == "string" and length > 0) and
+          (.metadata | has("generation") | not) and
+          (.metadata | has("creationTimestamp") | not) and
+          (.spec.title | type == "string" and length > 0) and
+          (.spec.elements | type == "object" and length > 0) and
+          ([
+              .. |
+              objects |
+              select(.kind? == "DataQuery" and .group? == "prometheus")
+          ] | length > 0) and
+          all(
+              .. |
+              objects |
+              select(.kind? == "DataQuery" and .group? == "prometheus");
+              (.datasource.name? | type == "string" and length > 0)
+          )
+      ' "$dashboard_file" >/dev/null
+  done
+
+
+
 printf '%s\n' "Checking Prometheus configuration"
 run_docker run --rm \
     --entrypoint promtool \
