@@ -158,6 +158,7 @@ Directories are added when their first managed artifact is introduced; Git does 
 - [Service Health API: from Python to a website](docs/guides/service-health-api-to-website.md)
 - [Service Health API code walkthrough](docs/guides/service-health-api-code-walkthrough.md)
 - [OPNsense lab firewall lockdown](docs/guides/opnsense-lab-firewall-lockdown.md)
+- [`sed` command guide and cheat sheet](docs/guides/sed-command-guide.md)
 
 ## Author
 
