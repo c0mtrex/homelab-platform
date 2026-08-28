@@ -34,15 +34,31 @@ The platform runs on Proxmox and deliberately separates administration, workload
 - Portainer container administration
 - QNAP storage for Git, documentation, and backups
 - Git and GitHub version-control workflow
+- GitHub Actions pull-request validation and immutable GHCR image publishing
+- A single-node K3s cluster on k801 using containerd and Traefik
+- A two-replica Python FastAPI staging deployment with startup, readiness, and liveness probes
+- ClusterIP Service discovery, Traefik Ingress, and OPNsense staging DNS
+- A version-controlled Grafana Service Health API dashboard
 
 ### Current limitations
 
-- Kubernetes and Argo CD are not installed yet.
-- The running Docker Compose definitions have not yet been reconciled into this repository.
-- GitHub Actions validation is not yet configured for this repository.
+- K3s is installed, but the single-node cluster has no node-level high availability and Argo CD is not installed yet.
+- Kubernetes manifests are still applied manually rather than reconciled automatically by GitOps.
+- The staging Ingress currently uses HTTP without TLS or application authentication.
 - Several container images currently use mutable `latest` tags.
 - Most monitoring containers do not yet define health checks.
 - Kubernetes metrics, centralized logging, tracing, and alert routing remain planned work.
+
+## Current Kubernetes Staging Milestone
+
+- Published the Service Health API to GHCR using an immutable Git-SHA tag and image digest.
+- Deployed two replicas into the Kubernetes staging namespace.
+- Added non-root execution, a read-only root filesystem, dropped capabilities, and resource controls.
+- Added startup, readiness, and liveness probes.
+- Exposed the ClusterIP Service through Traefik Ingress.
+- Added OPNsense DNS for service-health-api.staging.home.arpa.
+- Verified the health, readiness, Swagger documentation, and Prometheus metrics endpoints.
+- Documented the complete delivery path, source code, troubleshooting commands, and firewall-hardening procedure.
 
 ## Engineering Principles
 
@@ -92,17 +108,17 @@ Directories are added when their first managed artifact is introduced; Git does 
 
 - [x] Inventory running virtual machines and Docker workloads
 - [x] Verify inter-network DNS, routing, and service connectivity
-- [ ] Reconcile current architecture documentation
+- [x] Reconcile current architecture documentation
 - [x] Import sanitized Docker Compose definitions
 - [x] Add GitHub Actions validation
-- [ ] Add operational runbooks
+- [x] Add operational runbooks and learning guides
 
-### Next phase: Kubernetes and GitOps
+### Current phase: Kubernetes and GitOps
 
-- [ ] Create a recovery snapshot before cluster installation
-- [ ] Install `kubectl` and `kind` on `k801`
-- [ ] Deploy and troubleshoot a containerized application
-- [ ] Add health probes and resource controls
+- [x] Create a recovery snapshot before cluster installation
+- [x] Install single-node K3s on k801
+- [x] Deploy and troubleshoot a containerized application
+- [x] Add health probes and resource controls
 - [ ] Install Helm and Argo CD
 - [ ] Reconcile Kubernetes desired state from Git
 - [ ] Connect Kubernetes metrics to Prometheus and Grafana on `docker01`
@@ -126,11 +142,11 @@ Directories are added when their first managed artifact is introduced; Git does 
 | Operating systems | Ubuntu Server and Desktop | Standardized host configuration |
 | Networking | OPNsense, DNS, routing, firewall aliases | Tighter service-to-service policy |
 | Containers | Docker, Docker Compose, Portainer | Version-pinned images and health checks |
-| Orchestration | Not installed | Kubernetes with `kind` |
-| GitOps | Git documentation workflow | Argo CD reconciliation |
-| Observability | Prometheus, Grafana, Node Exporter, cAdvisor | Kubernetes metrics, logs, traces, alerts |
+| Orchestration | Single-node K3s, containerd, Traefik | Additional nodes and controlled failure testing |
+| GitOps | Reviewed Kubernetes manifests in Git | Argo CD reconciliation |
+| Observability | Prometheus, Grafana, Node Exporter, cAdvisor, application metrics | Kubernetes discovery, logs, traces, alerts |
 | Storage | QNAP and Proxmox storage | Tested rotation and recovery procedures |
-| CI/CD | Feature branches and pull requests | GitHub Actions validation |
+| CI/CD | Pull-request validation and GHCR publishing with GitHub Actions | Automated staging promotion and rollback |
 
 ## Documentation
 
@@ -139,6 +155,9 @@ Directories are added when their first managed artifact is introduced; Git does 
 - [Storage design](docs/architecture/003-storage-design.md)
 - [Monitoring stack](docs/architecture/004-monitoring-stack.md)
 - [Kubernetes and GitOps phase](docs/phases/005-kubernetes-gitops.md)
+- [Service Health API: from Python to a website](docs/guides/service-health-api-to-website.md)
+- [Service Health API code walkthrough](docs/guides/service-health-api-code-walkthrough.md)
+- [OPNsense lab firewall lockdown](docs/guides/opnsense-lab-firewall-lockdown.md)
 
 ## Author
 
