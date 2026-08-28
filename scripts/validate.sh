@@ -11,6 +11,7 @@ run_docker() {
         sudo docker "$@"
     fi
 }
+kubeconform_image="ghcr.io/yannh/kubeconform:v0.8.0-alpine@sha256:461fae0fa54c5fe64028152533e57f6b88adb1d26dbafd80092e7310d349ae48"
 
 printf '%s\n' "Checking tracked text files for CRLF line endings"
 if git grep --files-with-matches "$(printf '\r')" -- '*.md' '*.sh' '*.yaml' '*.yml'; then
@@ -22,6 +23,17 @@ printf '%s\n' "Checking Docker Compose models"
 run_docker compose --file docker/monitoring/compose.yaml config --quiet
 run_docker compose --file docker/portainer/compose.yaml config --quiet
 run_docker compose --file docker/service-health-api/compose.yaml config --quiet
+
+printf '%s\n' "Checking Kubernetes manifests"
+run_docker run --rm \
+    --volume "$repository_root:/work:ro" \
+    --workdir /work \
+    "$kubeconform_image" \
+    -kubernetes-version 1.36.0 \
+    -strict \
+    -summary \
+    -verbose \
+    kubernetes
 
 printf '%s\n' "Checking Grafana dashboard definitions"
   for dashboard_file in docker/monitoring/grafana/dashboards/*.json; do
