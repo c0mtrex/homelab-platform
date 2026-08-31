@@ -38,7 +38,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: service-health-api
-          image: ghcr.io/c0mtrex/service-health-api@sha256:9fb3a2270cd2fce1b7ef8be82ec3e4ec60f1092382ebe11877887352e53a482f
+          image: ghcr.io/c0mtrex/service-health-api:controlled-failure-does-not-exist
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
