@@ -26,6 +26,7 @@ spec:
     metadata:
       labels:
         app: service-health-api
+        deployment-method: argocd-auto-sync
     spec:
       securityContext:
         runAsNonRoot: true
