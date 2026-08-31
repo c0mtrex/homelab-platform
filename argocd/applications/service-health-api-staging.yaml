@@ -18,5 +18,9 @@ spec:
     namespace: staging
 
   syncPolicy:
+    automated:
+      enabled: true
+      prune: false
+      selfHeal: false
     syncOptions:
       - CreateNamespace=true
