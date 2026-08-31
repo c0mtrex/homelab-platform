@@ -36,28 +36,34 @@ The platform runs on Proxmox and deliberately separates administration, workload
 - Git and GitHub version-control workflow
 - GitHub Actions pull-request validation and immutable GHCR image publishing
 - A single-node K3s cluster on k801 using containerd and Traefik
-- A two-replica Python FastAPI staging deployment with startup, readiness, and liveness probes
+- A three-replica Python FastAPI staging deployment with startup, readiness, and liveness probes
 - ClusterIP Service discovery, Traefik Ingress, and OPNsense staging DNS
 - A version-controlled Grafana Service Health API dashboard
+- Argo CD v3.5.2 installed from a pinned, checksum-verified manifest
+- Manual GitOps reconciliation from GitHub `main` into the K3s staging namespace
 
 ### Current limitations
 
-- K3s is installed, but the single-node cluster has no node-level high availability and Argo CD is not installed yet.
-- Kubernetes manifests are still applied manually rather than reconciled automatically by GitOps.
+- K3s and Argo CD run on one node, so the cluster and GitOps control plane do not have node-level high availability.
+- Argo CD synchronization is intentionally manual; automatic sync, pruning, and self-healing remain disabled during the learning phase.
 - The staging Ingress currently uses HTTP without TLS or application authentication.
 - Several container images currently use mutable `latest` tags.
 - Most monitoring containers do not yet define health checks.
 - Kubernetes metrics, centralized logging, tracing, and alert routing remain planned work.
 
-## Current Kubernetes Staging Milestone
+## Current Kubernetes and GitOps Milestone
 
 - Published the Service Health API to GHCR using an immutable Git-SHA tag and image digest.
-- Deployed two replicas into the Kubernetes staging namespace.
+- Deployed three replicas into the Kubernetes staging namespace.
 - Added non-root execution, a read-only root filesystem, dropped capabilities, and resource controls.
 - Added startup, readiness, and liveness probes.
 - Exposed the ClusterIP Service through Traefik Ingress.
 - Added OPNsense DNS for service-health-api.staging.home.arpa.
 - Verified the health, readiness, Swagger documentation, and Prometheus metrics endpoints.
+- Installed Argo CD through a repeatable script that pins and verifies the official installation manifest.
+- Kept the Argo CD interface private through a Kubernetes port-forward and SSH tunnel.
+- Registered a declarative Argo CD Application that watches `main` and `kubernetes/staging`.
+- Completed an end-to-end GitOps exercise by changing the desired replica count from two to three, passing pull-request CI, merging to `main`, reviewing the Argo CD diff, and manually synchronizing K3s.
 - Documented the complete delivery path, source code, troubleshooting commands, and firewall-hardening procedure.
 
 ## Engineering Principles
@@ -119,8 +125,10 @@ Directories are added when their first managed artifact is introduced; Git does 
 - [x] Install single-node K3s on k801
 - [x] Deploy and troubleshoot a containerized application
 - [x] Add health probes and resource controls
-- [ ] Install Helm and Argo CD
-- [ ] Reconcile Kubernetes desired state from Git
+- [x] Install pinned, checksum-verified Argo CD
+- [x] Reconcile Kubernetes desired state from Git with manual synchronization
+- [x] Exercise a reviewed two-to-three replica GitOps deployment
+- [ ] Install Helm and evaluate Helm-based application packaging
 - [ ] Connect Kubernetes metrics to Prometheus and Grafana on `docker01`
 - [ ] Exercise drift, failed rollout, rollback, and recovery
 
@@ -143,10 +151,10 @@ Directories are added when their first managed artifact is introduced; Git does 
 | Networking | OPNsense, DNS, routing, firewall aliases | Tighter service-to-service policy |
 | Containers | Docker, Docker Compose, Portainer | Version-pinned images and health checks |
 | Orchestration | Single-node K3s, containerd, Traefik | Additional nodes and controlled failure testing |
-| GitOps | Reviewed Kubernetes manifests in Git | Argo CD reconciliation |
+| GitOps | Argo CD v3.5.2 with manual staging reconciliation | Controlled automatic sync, pruning, and self-healing |
 | Observability | Prometheus, Grafana, Node Exporter, cAdvisor, application metrics | Kubernetes discovery, logs, traces, alerts |
 | Storage | QNAP and Proxmox storage | Tested rotation and recovery procedures |
-| CI/CD | Pull-request validation and GHCR publishing with GitHub Actions | Automated staging promotion and rollback |
+| CI/CD | Pull-request validation, GHCR publishing, and manually approved staging delivery | Automated staging promotion and rollback |
 
 ## Documentation
 
@@ -155,6 +163,7 @@ Directories are added when their first managed artifact is introduced; Git does 
 - [Storage design](docs/architecture/003-storage-design.md)
 - [Monitoring stack](docs/architecture/004-monitoring-stack.md)
 - [Kubernetes and GitOps phase](docs/phases/005-kubernetes-gitops.md)
+- [Argo CD bootstrap and staging application](argocd/README.md)
 - [Service Health API: from Python to a website](docs/guides/service-health-api-to-website.md)
 - [Service Health API code walkthrough](docs/guides/service-health-api-code-walkthrough.md)
 - [OPNsense lab firewall lockdown](docs/guides/opnsense-lab-firewall-lockdown.md)
